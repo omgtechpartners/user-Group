@@ -8,7 +8,7 @@ class Jira:
         
         self.username = username
         self.password = token
-        self.base =  "https://soundunited.atlassian.net"
+        self.base =  "https://omg-test.atlassian.net"
         self.groups = ["external-access"]
 
 
@@ -47,13 +47,13 @@ class Jira:
                 "Content-Type": "application/json"
         }
         query = {
-                "groupId": "b3d73a9e-395d-4bab-a7fe-b61ddf037130",
+                "groupId": "ebb28936-e7dc-4fd3-95ad-b67995895fdd",
                 
                 }
         payload = json.dumps( {
                 "accountId": accountid
                 } )
-        
+        print(payload)
         response = requests.request(
             "POST",
             url,
@@ -77,7 +77,7 @@ def main():
         
         
         res = j.addUsertoGroup(item)
-        print(res)
+        print(res.text)
   
        
 

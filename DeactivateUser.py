@@ -2,14 +2,16 @@
 import pandas as pd
 import requests
 from requests.auth import HTTPBasicAuth
+from datetime import *
 
 class Jira:
     def __init__(self, username,password):
         
         self.username = username
         self.password = password
-        self.base =  "https://soundunited.atlassian.net"
-        self.groups = ["external-access"]
+        self.base =  "https://soundunited.atlassian.net" #UPDATE THIS END POINT RESPECTIVE INSTANCE
+        self.groups = ["external-access"]#UPDATE THE GROUP NAME RESPECTIVE TO THE INSTANCE
+       
 
 
     def GetUseringroup(self, accountid):
@@ -46,7 +48,7 @@ class Jira:
                 "Content-Type": "application/json"
         }
         query = {
-                "groupId": "b3d73a9e-395d-4bab-a7fe-b61ddf037130",
+                "groupId": "b3d73a9e-395d-4bab-a7fe-b61ddf037130",#UPDATE GROUP ID
                 "accountId":accountid
                 }
         
@@ -66,12 +68,15 @@ def main():
     username = input("Enter your usename: ")
     token =    input("Enter your token: ")
     j = Jira(username,token)
-    df = pd.read_excel('TestExternal.xlsx',sheet_name='JIRA')
-  
+    df = pd.read_excel('export-users.xlsx',sheet_name='export-users')
+    datetime = pd.to_datetime(df['Last seen in Jira Software - soundunited']).dt.date
+    quarterDate = date(2023,7,1)
     for item in df['User id']:
         
         found = j.GetUseringroup(item)
         if found == True:
+            print(datetime[0])
+            if datetime[0] < quarterDate:
                 print(item)
                 res = j.removeUserFromGroup(item)
                 print(res)
